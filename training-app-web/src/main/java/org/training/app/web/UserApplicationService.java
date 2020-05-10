@@ -14,10 +14,9 @@ public class UserApplicationService {
 	@Inject
 	private UserApplicationBean userApplicationBean;
 	
-	public void process(UserRequest userRequest) {
-		System.out.println(userRequest.getFirstName());
-		
+	public String process(UserRequest userRequest) {		
 		userApplicationBean.process();
+		return "test: " + userRequest.getFirstName(); 
 	}
 	
 }

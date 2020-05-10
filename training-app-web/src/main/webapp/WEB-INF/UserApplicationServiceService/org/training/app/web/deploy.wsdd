@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Use this file to deploy some handlers/chains and services      --><!-- Two ways to do this:                                           --><!--   java org.apache.axis.client.AdminClient deploy.wsdd          --><!--      after the axis server is running                          --><!-- or                                                             --><!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   --><!--      from the same directory that the Axis engine runs         --><deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from UserApplicationServiceService WSDL service -->
+
+  <service name="UserApplicationService" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://web.app.training.org"/>
+      <parameter name="wsdlServiceElement" value="UserApplicationServiceService"/>
+      <parameter name="schemaQualified" value="http://web.app.training.org"/>
+      <parameter name="wsdlServicePort" value="UserApplicationService"/>
+      <parameter name="className" value="org.training.app.web.UserApplicationService"/>
+      <parameter name="wsdlPortType" value="UserApplicationService"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation xmlns:operNS="http://web.app.training.org" xmlns:retNS="http://web.app.training.org" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="process" qname="operNS:process" returnQName="retNS:processReturn" returnType="rtns:string" soapAction="">
+        <parameter xmlns:pns="http://web.app.training.org" xmlns:tns="http://web.app.training.org" qname="pns:userRequest" type="tns:UserRequest"/>
+      </operation>
+      <parameter name="allowedMethods" value="process"/>
+
+      <typeMapping xmlns:ns="http://web.app.training.org" qname="ns:UserRequest" type="java:org.training.app.web.UserRequest" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+  </service>
+</deployment>
