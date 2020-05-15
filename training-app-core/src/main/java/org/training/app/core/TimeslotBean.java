@@ -1,5 +1,6 @@
 package org.training.app.core;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
@@ -12,18 +13,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Stateless
 public class TimeslotBean {
-	
-	final Logger log = Logger.getLogger(TimeslotBean.class.getName());
-	
+
+	Logger log = Logger.getLogger(TimeslotBean.class.getName());
+
 	public TimeslotResponse process(TimeslotRequest timeslotRequest) {
-		log.info(timeslotRequest.toString());
-		
-		return TimeslotResponse
-				.builder()
-				.available(false)
-				.reason("Central office is closed due to the reconstruction. It will reopen on Friday.")
-				.build();
+		log.log(Level.INFO, timeslotRequest.toString());
+
+		return TimeslotResponse.builder().available(false)
+				.reason("Central office is closed due to the reconstruction. It will reopen on Friday.").build();
 	}
-	
 
 }
