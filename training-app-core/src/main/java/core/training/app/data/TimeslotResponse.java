@@ -1,4 +1,4 @@
-package org.training.app.core.data;
+package core.training.app.data;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

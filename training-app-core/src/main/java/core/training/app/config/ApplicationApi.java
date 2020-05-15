@@ -1,4 +1,4 @@
-package org.training.app.core.config;
+package core.training.app.config;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

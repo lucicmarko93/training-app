@@ -1,12 +1,11 @@
-package org.training.app.web;
+package web.training.app;
 
 import javax.inject.Inject;
 import javax.jws.WebService;
 
-import org.training.app.core.TimeslotBean;
-import org.training.app.core.data.TimeslotRequest;
-import org.training.app.core.data.TimeslotResponse;
-
+import core.training.app.data.TimeslotRequest;
+import core.training.app.data.TimeslotResponse;
+import core.training.app.services.TimeslotBean;
 import lombok.NoArgsConstructor;
 
 @WebService
