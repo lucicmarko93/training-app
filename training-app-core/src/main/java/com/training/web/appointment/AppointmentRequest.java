@@ -1,4 +1,8 @@
-package core.training.app.data;
+package com.training.web.appointment;
+
+import java.time.LocalDateTime;
+
+import javax.json.bind.annotation.JsonbDateFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +15,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class TimeslotRequest {
+public class AppointmentRequest {
 
-	private String timeStart;
+	@JsonbDateFormat(value = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime timeStart;
 	private String firstName;
 	private String lastName;
 	private String jmbg;

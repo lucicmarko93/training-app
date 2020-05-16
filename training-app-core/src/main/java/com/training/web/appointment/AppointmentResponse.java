@@ -1,4 +1,4 @@
-package core.training.app.data;
+package com.training.web.appointment;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @NoArgsConstructor
 @SuperBuilder
-public class TimeslotResponse {
+public class AppointmentResponse {
 
 	private boolean available;
 	private String reason;

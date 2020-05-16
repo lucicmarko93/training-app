@@ -1,4 +1,4 @@
-package core.training.app.model;
+package com.training.infrastructure.common;
 
 import java.io.Serializable;
 
