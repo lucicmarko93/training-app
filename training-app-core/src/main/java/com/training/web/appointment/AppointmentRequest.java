@@ -17,7 +17,7 @@ import lombok.ToString;
 @ToString
 public class AppointmentRequest {
 
-	@JsonbDateFormat(value = "yyyy-MM-dd HH:mm:ss")
+	@JsonbDateFormat(value = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime timeStart;
 	private String firstName;
 	private String lastName;

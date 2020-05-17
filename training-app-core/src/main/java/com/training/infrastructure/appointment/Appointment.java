@@ -21,6 +21,8 @@ import lombok.Setter;
 public class Appointment extends AbstractBaseEntity {
 
 	private LocalDateTime startTime;
+	
+	private LocalDateTime endTime;
 
 	private String firstName;
 

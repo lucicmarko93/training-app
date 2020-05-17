@@ -11,7 +11,7 @@ import javax.persistence.Query;
 @Stateless
 public class AppointmentRepository {
 
-	@PersistenceContext(unitName = "blog")
+	@PersistenceContext(unitName = "first")
 	private EntityManager em;
 
 	public void save(Appointment appointment) {

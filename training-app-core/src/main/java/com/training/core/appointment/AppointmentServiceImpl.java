@@ -28,8 +28,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 	public AppointmentResponse create(AppointmentRequest appointmentRequest) {
 		log.info(appointmentRequest.toString());
 
-		Appointment appointment = Appointment.builder().startTime(appointmentRequest.getTimeStart())
-				.firstName(appointmentRequest.getFirstName()).lastName(appointmentRequest.getLastName())
+		Appointment appointment = Appointment.builder()
+				.startTime(appointmentRequest.getTimeStart())
+				.endTime(appointmentRequest.getTimeStart().plusMinutes(15))
+				.firstName(appointmentRequest.getFirstName())
+				.lastName(appointmentRequest.getLastName())
 				.jmbg(appointmentRequest.getJmbg()).build();
 
 		if (open) {
