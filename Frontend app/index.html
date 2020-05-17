@@ -1,0 +1,51 @@
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<title>Training</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		</head>
+		<body>
+
+	<div class="container">
+	  <h2>Training app</h2>
+	  <form id="form" class="form-horizontal" action="" method="post">
+			<div class="form-group">
+		  <label class="control-label col-sm-2" for="timeStart">TimeStart:</label>
+		  <div class="col-sm-10">          
+			<input type="datetime-local" class="form-control" id="timeStart" placeholder="Enter timeStart" name="timeStart">
+		  </div>
+		</div>
+		<div class="form-group">
+		  <label class="control-label col-sm-2" for="firstName">FirstName:</label>
+		  <div class="col-sm-10">
+			<input type="text" class="form-control" id="firstName" placeholder="Enter firstname" name="firstName">
+		  </div>
+		</div>
+		<div class="form-group">
+		  <label class="control-label col-sm-2" for="lastName">LastName:</label>
+		  <div class="col-sm-10">          
+			<input type="text" class="form-control" id="lastName" placeholder="Enter lastName" name="lastName">
+		  </div>
+		</div>
+			<div class="form-group">
+		  <label class="control-label col-sm-2" for="jmbg">JMBG:</label>
+		  <div class="col-sm-10">          
+			<input type="text" class="form-control" id="jmbg" placeholder="Enter jmbg" name="jmbg">
+		  </div>
+		</div>
+
+		<div class="form-group">        
+		  <div class="col-sm-offset-2 col-sm-10">
+			<input class="btn btn-default" id="submit" type="submit" name="submit" value="submit">
+		  </div>
+		</div>
+	  </form>
+	 	<div class="alert alert-success" id="success">
+</div> 
+	</div>
+
+		</body>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+			<script src="main.js"></script>
+	</html>
