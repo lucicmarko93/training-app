@@ -19,7 +19,7 @@ public class AppointmentRepository {
 	}
 	
 	public Appointment getByTime(LocalDateTime time) {
-		Query query = em.createQuery("Select a from Appointment a where a.startTime = :time ");
+		Query query = em.createQuery("Select a from Appointment a where a.timeStart = :time ");
 	    query.setParameter("time", time);
 	    
 	    List<Appointment> list = query.getResultList();

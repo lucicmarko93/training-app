@@ -16,13 +16,20 @@ import lombok.Setter;
 public class Applicant {
 
 	private String firstName;
+	
 	private String lastName;
+	
+	private String jmbg;
 	
 	@Enumerated(EnumType.STRING)
 	private Sex sex;
+	
 	private LocalDate dateOfBirth;
+	
 	private String nationality;
+	
 	private String profession;
+	
 	private int age;
 	
 	@Embedded

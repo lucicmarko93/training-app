@@ -10,7 +10,6 @@ import javax.inject.Inject;
 
 import com.training.infrastructure.appointment.Appointment;
 import com.training.infrastructure.appointment.AppointmentRepository;
-import com.training.web.appointment.AppointmentRequest;
 import com.training.web.appointment.AppointmentResponse;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,46 +24,38 @@ public class AppointmentServiceImpl implements AppointmentService {
 	private boolean open = true;
 
 	@Override
-	public AppointmentResponse create(AppointmentRequest appointmentRequest) {
-		log.info(appointmentRequest.toString());
-
-		Appointment appointment = Appointment.builder()
-				.startTime(appointmentRequest.getTimeStart())
-				.endTime(appointmentRequest.getTimeStart().plusMinutes(15))
-				.firstName(appointmentRequest.getFirstName())
-				.lastName(appointmentRequest.getLastName())
-				.jmbg(appointmentRequest.getJmbg()).build();
+	public AppointmentResponse create(Appointment appointment) {
+		log.info(appointment.toString());
 
 		if (open) {
 			
-			Appointment tempA = appointmentRepository.getByTime(appointment.getStartTime());
+			Appointment tempA = appointmentRepository.getByTime(appointment.getTimeStart());
 			
 			if (Objects.nonNull(tempA)) {
-				return AppointmentResponse.builder()
-						.available(false)
-						.reason("Timslot is already used!")
-						.build();
+				
+				return createResponse(false, "Timslot is already used!");
 			}
-						
+			
+			appointment.setEndTime(appointment.getTimeStart().plusMinutes(15));
+			
 			appointmentRepository.save(appointment);
 			
-			return AppointmentResponse.builder()
-					.available(true)
-					.reason("Appointment successfuly created!")
-					.build();
+			return createResponse(true, "Appointment successfuly created!");
 			
 		} else {
 			
-			return AppointmentResponse.builder()
-					.available(false)
-					.reason("Service is not available at this moment! Please try later.")
-					.build();
-
+			return createResponse(false, "Service is not available at this moment! Please try later.");
 		}
 
 	}
 	
-
+	private AppointmentResponse createResponse(boolean available, String message) {
+		return AppointmentResponse.builder()
+				.available(available)
+				.message(message)
+				.build();
+	}
+	
 	@Lock(LockType.READ)
 	@Schedule(hour = "*", minute = "*", second = "*/10", persistent = false)
 	private void o() throws InterruptedException {

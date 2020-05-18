@@ -1,16 +1,14 @@
 package com.training.web.appointment;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@SuperBuilder
+@Builder
 public class AppointmentResponse {
 
 	private boolean available;
-	private String reason;
+	private String message;
 }

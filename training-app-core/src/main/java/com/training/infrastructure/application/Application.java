@@ -2,14 +2,18 @@ package com.training.infrastructure.application;
 
 import com.training.infrastructure.common.AbstractBaseEntity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
 public class Application extends AbstractBaseEntity {
@@ -25,4 +29,6 @@ public class Application extends AbstractBaseEntity {
 	
 	@Embedded
 	private Applicant applicant; 
+	
+	private ApplicationState applicationState;
 }

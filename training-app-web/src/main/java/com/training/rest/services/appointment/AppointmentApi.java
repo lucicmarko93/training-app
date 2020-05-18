@@ -1,4 +1,4 @@
-package web.training.app;
+package com.training.rest.services.appointment;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -9,9 +9,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.training.core.application.ApplicationService;
+import org.mapstruct.factory.Mappers;
+
 import com.training.core.appointment.AppointmentService;
-import com.training.web.application.ApplicationRequest;
 import com.training.web.appointment.AppointmentRequest;
 
 @Path("appointments")
@@ -21,18 +21,15 @@ public class AppointmentApi {
 	@Inject
 	private AppointmentService appointmentService;
 	
-	@Inject
-	private ApplicationService applicationService;
+	private AppointmentMapper mapper = Mappers.getMapper(AppointmentMapper.class);
 	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response processRequest(AppointmentRequest appointmentRequest) {	
-		
-		applicationService.create(new ApplicationRequest());
-		
+	public Response create(AppointmentRequest appointmentRequest) {	
+				
 		return Response.status(Response.Status.OK)
-				.entity(appointmentService.create(appointmentRequest))
+				.entity(appointmentService.create(mapper.map(appointmentRequest)))
 				.build();
 	}
 

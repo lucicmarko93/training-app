@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import com.training.infrastructure.common.AbstractBaseEntity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,11 +15,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 public class Appointment extends AbstractBaseEntity {
 
-	private LocalDateTime startTime;
+	private LocalDateTime timeStart;
 	
 	private LocalDateTime endTime;
 
@@ -29,4 +27,6 @@ public class Appointment extends AbstractBaseEntity {
 	private String lastName;
 
 	private String jmbg;
+	
+	private boolean showedUp = false;
 }
