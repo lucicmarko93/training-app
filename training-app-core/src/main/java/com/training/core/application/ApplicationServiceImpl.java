@@ -5,6 +5,7 @@ import java.util.Objects;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import com.training.config.AppPropertiesLoader;
 import com.training.infrastructure.application.Application;
 import com.training.infrastructure.application.ApplicationRepository;
 import com.training.infrastructure.appointment.Appointment;
@@ -16,6 +17,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	private ApplicationRepository applicationRepository;
 	private AppointmentRepository appontmentRepository;
+	
+	@Inject
+	private AppPropertiesLoader properties;
 
 	@Inject
 	public ApplicationServiceImpl(final ApplicationRepository applicationRepository,
@@ -26,6 +30,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	@Override
 	public ApplicationResponse create(Application application) {
+		
+		System.out.println(properties.getIds());
 		
 		Appointment appointment = appontmentRepository.getByJmbg(application.getApplicant().getJmbg());
 		
@@ -42,6 +48,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 			appointment.setShowedUp(true);
 			
 			applicationRepository.save(application);
+			
+			application.setApplicationNumber(String.format("%05d", application.getId()));
 						
 			appontmentRepository.update(appointment);
 			
