@@ -6,10 +6,10 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import com.training.config.AppPropertiesLoader;
-import com.training.infrastructure.application.Application;
-import com.training.infrastructure.application.ApplicationRepository;
-import com.training.infrastructure.appointment.Appointment;
-import com.training.infrastructure.appointment.AppointmentRepository;
+import com.training.infrastructure.database.application.Application;
+import com.training.infrastructure.database.application.ApplicationRepository;
+import com.training.infrastructure.database.appointment.Appointment;
+import com.training.infrastructure.database.appointment.AppointmentRepository;
 import com.training.web.application.ApplicationResponse;
 
 @Stateless
@@ -17,21 +17,19 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	private ApplicationRepository applicationRepository;
 	private AppointmentRepository appontmentRepository;
-	
-	@Inject
-	private AppPropertiesLoader properties;
+	private AppPropertiesLoader appPropertiesLoader;
 
 	@Inject
-	public ApplicationServiceImpl(final ApplicationRepository applicationRepository,
-			final AppointmentRepository appointmentRepository) {
+	public ApplicationServiceImpl(AppPropertiesLoader appPropertiesLoader,
+			ApplicationRepository applicationRepository,
+			AppointmentRepository appointmentRepository) {
 		this.applicationRepository = applicationRepository;
 		this.appontmentRepository = appointmentRepository;
+		this.appPropertiesLoader = appPropertiesLoader;
 	}
 
 	@Override
 	public ApplicationResponse create(Application application) {
-		
-		System.out.println(properties.getIds());
 		
 		Appointment appointment = appontmentRepository.getByJmbg(application.getApplicant().getJmbg());
 		

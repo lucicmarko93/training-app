@@ -8,8 +8,8 @@ import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import com.training.infrastructure.appointment.Appointment;
-import com.training.infrastructure.appointment.AppointmentRepository;
+import com.training.infrastructure.database.appointment.Appointment;
+import com.training.infrastructure.database.appointment.AppointmentRepository;
 import com.training.web.appointment.AppointmentResponse;
 
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.training.infrastructure.appointment;
+package com.training.infrastructure.database.appointment;
 
 import java.time.LocalDateTime;
 import java.util.List;

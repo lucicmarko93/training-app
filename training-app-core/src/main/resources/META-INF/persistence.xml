@@ -7,7 +7,7 @@
 	<persistence-unit name="first">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<jta-data-source>java:/TRAINING</jta-data-source>
-		<class>com.training.infrastructure.appointment.Appointment</class>
+		<class>com.training.infrastructure.database.appointment.Appointment</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<!-- <property name="hibernate.archive.autodetection" value="class" /> -->
@@ -21,8 +21,8 @@
 	<persistence-unit name="second">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<jta-data-source>java:/TRAINING2</jta-data-source>
-		<class>com.training.infrastructure.application.Application</class>
-				<class>com.training.infrastructure.report.Report</class>
+		<class>com.training.infrastructure.database.application.Application</class>
+		<class>com.training.infrastructure.database.report.Report</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<!-- <property name="hibernate.archive.autodetection" value="class" /> -->

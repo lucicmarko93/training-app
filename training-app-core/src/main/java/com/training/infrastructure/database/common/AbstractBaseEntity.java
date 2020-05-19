@@ -1,4 +1,4 @@
-package com.training.infrastructure.common;
+package com.training.infrastructure.database.common;
 
 import java.io.Serializable;
 
@@ -14,10 +14,12 @@ import lombok.Setter;
 @Setter
 public abstract class AbstractBaseEntity implements Serializable {
 
-    /**
+	
+	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -1415708223529212741L;
+	
 	
 	@Id
     @GeneratedValue

@@ -1,10 +1,10 @@
-package com.training.infrastructure.appointment;
+package com.training.infrastructure.database.appointment;
 
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 
-import com.training.infrastructure.common.AbstractBaseEntity;
+import com.training.infrastructure.database.common.AbstractBaseEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

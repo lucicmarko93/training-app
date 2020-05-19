@@ -1,14 +1,13 @@
-package com.training.infrastructure.application;
+package com.training.infrastructure.database.application;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import com.training.infrastructure.common.AbstractBaseEntity;
+import com.training.infrastructure.database.common.AbstractBaseEntity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +16,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 public class Application extends AbstractBaseEntity {
 	

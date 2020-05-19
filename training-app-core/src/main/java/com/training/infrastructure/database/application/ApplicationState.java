@@ -1,4 +1,4 @@
-package com.training.infrastructure.application;
+package com.training.infrastructure.database.application;
 
 public enum ApplicationState {
 
