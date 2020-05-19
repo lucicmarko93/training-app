@@ -1,7 +1,7 @@
 package com.training.web.services;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.jws.WebService;
 
 import org.mapstruct.factory.Mappers;
@@ -15,7 +15,7 @@ import com.training.web.appointment.AppointmentResponse;
 @Stateless
 public class AppointmentWebService {
 
-	@Inject
+	@EJB
 	private AppointmentService appointmentService;
 	
 	private AppointmentMapper appointmentMapper = Mappers.getMapper(AppointmentMapper.class);
