@@ -17,6 +17,18 @@ public class AppPropertiesLoader {
 	
 	@Inject 
 	@ConfigProperty(name = "black.list.ids")
-	private List<Integer> ids;
+	private List<String> ids;
+	
+	@Inject 
+	@ConfigProperty(name = "adult.age")
+	private int adultAge;
+	
+	@Inject 
+	@ConfigProperty(name = "bussines.day.open.hour")
+	private String bussinesDayOpenHour;
+	
+	@Inject 
+	@ConfigProperty(name = "bussines.day.close.hour")
+	private String bussinesDayCloseHour;
 
 }
