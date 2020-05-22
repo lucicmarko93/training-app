@@ -22,6 +22,7 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<jta-data-source>java:/TRAINING2</jta-data-source>
 		<class>com.training.infrastructure.database.application.Application</class>
+		<class>com.training.infrastructure.database.citizen.Citizen</class>
 		<class>com.training.infrastructure.database.report.Report</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>

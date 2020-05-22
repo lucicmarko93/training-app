@@ -14,12 +14,17 @@ import javax.inject.Inject;
 import com.training.business.common.exceptions.CitizenHasReservationException;
 import com.training.business.common.exceptions.ServiceIsNotAvailableException;
 import com.training.business.common.exceptions.TimslotInUsageException;
-import com.training.business.scheduler.AvailabilitySchedulerService;
+import com.training.business.schedulers.AvailabilitySchedulerService;
 import com.training.infrastructure.database.timeslot.Timeslot;
 import com.training.infrastructure.database.timeslot.TimeslotRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Timeslot service implementation
+ * @author marko.lucic
+ *
+ */
 @Slf4j
 @Stateless
 public class TimeslotServiceImpl implements TimeslotService {
@@ -30,6 +35,11 @@ public class TimeslotServiceImpl implements TimeslotService {
 	@Inject
 	private AvailabilitySchedulerService aSchedulerService;
 
+	/**
+	 * Create timeslot
+	 * @param timeslot
+	 * @return {@link Timeslot}
+	 */
 	@Override
 	public Timeslot create(Timeslot timeslot) {
 		log.info("Reserve timeslot for {} - {}", timeslot.getStartTime(), timeslot.getStartTime().plusMinutes(15));
@@ -42,6 +52,11 @@ public class TimeslotServiceImpl implements TimeslotService {
 
 	}
 
+	/**
+	 * Get all available timeslots for date
+	 * @param date
+	 * @return {@link List}
+	 */
 	@Override
 	public List<Timeslot> getAll(LocalDate date) {
 		log.info("Get all timeslots for {}", date);
@@ -54,6 +69,11 @@ public class TimeslotServiceImpl implements TimeslotService {
 
 	}
 
+	/**
+	 * Create, validate and save timeslot
+	 * @param timeslot
+	 * @return
+	 */
 	private Timeslot createTimeslot(Timeslot timeslot) {
 		validateTimeslot(timeslot);
 
@@ -64,6 +84,10 @@ public class TimeslotServiceImpl implements TimeslotService {
 		return timeslot;
 	}
 
+	/**
+	 * Validate timeslot
+	 * @param timeslot
+	 */
 	private void validateTimeslot(Timeslot timeslot) {
 
 		if (timeslotInUsage(timeslot)) {
@@ -75,6 +99,11 @@ public class TimeslotServiceImpl implements TimeslotService {
 		}
 	}
 
+	/**
+	 * Get all available timeslots for date - timeslot in usage
+	 * @param date
+	 * @return
+	 */
 	private List<Timeslot> getAvailableTimeslots(LocalDate date) {
 		List<LocalDateTime> usedTimeslots = timeslotRepository.getByDate(date.atTime(8, 0)).stream()
 				.map(Timeslot::getStartTime).collect(Collectors.toList());
@@ -87,14 +116,29 @@ public class TimeslotServiceImpl implements TimeslotService {
 				.collect(Collectors.toList());
 	}
 
+	/**
+	 * Check if timeslot is in usage
+	 * @param timeslot
+	 * @return
+	 */
 	private boolean timeslotInUsage(Timeslot timeslot) {
 		return Objects.nonNull(timeslotRepository.getByTime(timeslot.getStartTime()));
 	}
 
+	/**
+	 * Check if citizen has reservation for date
+	 * @param timeslot
+	 * @return
+	 */
 	private boolean citizenHasReservationForDate(Timeslot timeslot) {
 		return Objects.nonNull(timeslotRepository.getByJmbgAndDate(timeslot.getJmbg(), timeslot.getStartTime()));
 	}
 
+	/**
+	 * Get all timeslots for date
+	 * @param date
+	 * @return
+	 */
 	private List<LocalDateTime> getIntervals(LocalDate date) {
 
 		List<LocalDateTime> intervals = new ArrayList<>();

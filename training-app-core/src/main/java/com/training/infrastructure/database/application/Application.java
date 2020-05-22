@@ -1,12 +1,13 @@
 package com.training.infrastructure.database.application;
 
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import com.training.infrastructure.database.citizen.Citizen;
 import com.training.infrastructure.database.common.AbstractBaseEntity;
 
 import lombok.AllArgsConstructor;
@@ -24,26 +25,23 @@ public class Application extends AbstractBaseEntity {
 	private String applicationNumber;
 	
 	@NotNull
-	@NotBlank
 	@Enumerated(EnumType.STRING)
 	private DocumentType documentType;
 	
 	@NotNull
-	@NotBlank
 	@Enumerated(EnumType.STRING)
 	private ApplicationKind applicationKind;
 	
 	@NotNull
-	@NotBlank
 	@Enumerated(EnumType.STRING)
 	private Priority priority;
 	
-	@Embedded
-	private Citizen citizen; 
-	
-	@NotNull
-	@NotBlank
 	private String comment;
 	
+	@Enumerated(EnumType.STRING)
 	private ApplicationState applicationState;
+	
+	@ManyToOne
+	@JoinColumn(name = "fk_citizen")
+	private Citizen citizen; 
 }

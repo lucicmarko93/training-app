@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.training.business.application.ApplicationService;
-import com.training.web.rest.application.data.ApplicationRequest;
+import com.training.web.rest.application.data.ApplicationDto;
 
 @Path("applications")
 @Stateless
@@ -27,11 +27,11 @@ public class ApplicationApi {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response create(ApplicationRequest applicationRequest) {
+	public Response create(ApplicationDto applicationDto) {
 
 		return Response
 				.status(Response.Status.CREATED)
-				.entity(applicationService.create(mapper.map(applicationRequest)))
+				.entity(applicationService.create(mapper.map(applicationDto)))
 				.build();
 	}
 

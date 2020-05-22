@@ -1,4 +1,6 @@
-package com.training.infrastructure.database.application;
+package com.training.infrastructure.database.citizen;
+
+import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
@@ -10,8 +12,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Embeddable
-public class Address {
+public class Address implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@NotNull
 	@NotBlank
 	private String street;

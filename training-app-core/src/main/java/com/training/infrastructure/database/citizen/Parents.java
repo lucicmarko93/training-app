@@ -1,4 +1,6 @@
-package com.training.infrastructure.database.application;
+package com.training.infrastructure.database.citizen;
+
+import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
@@ -10,8 +12,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Embeddable
-public class Parents {
+public class Parents implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	@NotNull
 	@NotBlank
 	private String motherFirstName;
