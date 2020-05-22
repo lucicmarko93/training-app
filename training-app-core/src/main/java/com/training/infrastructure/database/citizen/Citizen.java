@@ -8,6 +8,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
@@ -64,6 +65,6 @@ public class Citizen extends AbstractBaseEntity{
 	@Embedded
 	private Address address;
 	
-	@OneToMany(mappedBy = "citizen",cascade = CascadeType.ALL)
-	private List<Application> application;
+	@OneToMany(mappedBy = "citizen",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	private List<Application> applications;
 }

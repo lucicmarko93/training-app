@@ -37,6 +37,10 @@ public class ApplicationRepository {
 	public void update(Application application) {
 		em.merge(application);
 
+	}
+
+	public Application findById(long id) {
+		return em.find(Application.class, id);
 	};
 
 }

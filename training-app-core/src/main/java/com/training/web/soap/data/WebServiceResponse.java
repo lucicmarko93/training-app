@@ -1,6 +1,7 @@
-package com.training.web.soap.application;
+package com.training.web.soap.data;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,7 +10,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonalizationResponse {
-	private boolean successfully;
+@Builder
+public class WebServiceResponse {
+
+	private int code;
 	private String message;
 }

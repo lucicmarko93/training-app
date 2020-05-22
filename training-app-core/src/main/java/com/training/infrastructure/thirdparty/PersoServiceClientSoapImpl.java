@@ -9,7 +9,10 @@ import com.training.infrastructure.thirdparty.data.PersoServiceMockService;
 import com.training.infrastructure.thirdparty.data.PersonalizationResponse;
 import com.training.web.rest.application.ApplicationMapper;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Stateless
+@Slf4j
 public class PersoServiceClientSoapImpl implements PersoServiceClient {
 	
 	@Inject
@@ -24,7 +27,7 @@ public class PersoServiceClientSoapImpl implements PersoServiceClient {
 		
 		PersonalizationResponse response = service.personalizationR(mapper.map(application));
 		
-		System.out.println(response.getMessage());
+		log.info("Message from Soap service: *Successfully - {} | message {}*",response.isSuccessfully(),response.getMessage());
 	}
 
 }
