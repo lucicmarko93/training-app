@@ -1,13 +1,13 @@
 package com.training.business.common.exceptions;
 
-public class TimslotInUsageException extends RuntimeException {
+public class ConflictException extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public TimslotInUsageException(String s) {
+	public ConflictException(String s) {
 		super(s);
 	}
 }

@@ -1,16 +1,18 @@
-package com.training.business.application;
+package com.training.business.services.application;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import com.training.business.common.exceptions.ConflictException;
 import com.training.business.common.exceptions.ResourceNotFoundException;
 import com.training.business.common.exceptions.ServiceIsNotAvailableException;
-import com.training.business.common.exceptions.TimslotInUsageException;
 import com.training.business.messages.ProducerPersoService;
 import com.training.business.schedulers.AvailabilitySchedulerService;
 import com.training.config.AppPropertiesLoader;
@@ -25,6 +27,8 @@ import com.training.infrastructure.database.timeslot.TimeslotRepository;
 @Stateless
 public class ApplicationServiceImpl implements ApplicationService {
 
+	private static final String APP_NUMBER_PATTERN = "%05d";
+	
 	private ApplicationRepository applicationRepository;
 	private TimeslotRepository timeslotRepository;
 	private CitizenRepository citizenRepository;
@@ -45,9 +49,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 		this.producerPersoService = producerPersoService;
 		this.aSchedulerService = aSchedulerService;
 		this.appPropertiesLoader = appPropertiesLoader;
-
 	}
 
+	/**
+	 * Create application
+	 * @return {@link Application}
+	 */
 	@Override
 	public Application create(Application application) {
 		if (aSchedulerService.isOpen()) {
@@ -57,6 +64,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 		}
 	}
 
+	/**
+	 * Process application
+	 */
 	@Override
 	public void processApplication(String applicationNumber) {	
 		if (aSchedulerService.isOpen()) {
@@ -66,29 +76,32 @@ public class ApplicationServiceImpl implements ApplicationService {
 		}
 	}
 	
+	/**
+	 * Create application, validate and add additional data
+	 * @param application
+	 * @return
+	 */
 	private Application createApplication(Application application) {
 
 		Citizen citizen = application.getCitizen();
 
 		Timeslot timeslot = timeslotRepository.getByJmbgAndDate(citizen.getJmbg(), LocalDateTime.now());
 
-		validateApplication(timeslot);
+		validateTimeslot(timeslot);
 
-		timeslot.setShowedUp(true);
-		
-		application.setApplicationState(ApplicationState.RECEIVED);
-		
 		citizenRepository.save(citizen);
 
 		applicationRepository.save(application);
-
-		application.setApplicationNumber(String.format("%05d", application.getId()));
-
-		timeslotRepository.update(timeslot);
-
+		
+		setAdditional(application, timeslot);
+		
 		return application;
 	}
 	
+	/**
+	 * Process application to personalization service 
+	 * @param applicationNumber
+	 */
 	private void processToPersonalization(String applicationNumber) {
 
 		Application application = applicationRepository.getByApplicationNumber(applicationNumber);
@@ -110,35 +123,83 @@ public class ApplicationServiceImpl implements ApplicationService {
 		}
 	}
 
+	/**
+	 * Check application is related with existing timeslot for customer
+	 * @param timeslot
+	 */
+	private void validateTimeslot(Timeslot timeslot) {
+		if (Objects.isNull(timeslot)) {
+			throw new ConflictException("Timeslot is not created for this citizen!");
+		}
+		if (!applicationIsOnTime(timeslot.getStartTime())) {
+			throw new ConflictException("Citizen hasn't created timeslot for this time!");
+		}
+	}
+	
+	/**
+	 * Set application state, number and update timeslot
+	 * @param application
+	 * @param timeslot
+	 */
+	private void setAdditional(Application application, Timeslot timeslot) {
+		application.setApplicationState(ApplicationState.RECEIVED);
+		application.setApplicationNumber(String.format(APP_NUMBER_PATTERN, application.getId()));
+		timeslot.setShowedUp(true);
+		timeslotRepository.update(timeslot);
+
+	}
+	
+	/**
+	 * Set citizen age
+	 * @param citizen
+	 */
 	private void setCitizenAge(Citizen citizen) {
 		citizen.setAge(Period.between(citizen.getDateOfBirth(), LocalDate.now()).getYears());
 	}
 
-	private void validateApplication(Timeslot timeslot) {
-		if (Objects.isNull(timeslot)) {
-			throw new TimslotInUsageException("Timeslot is not created for this citizen!");
-		}
-		if (!applicationIsOnTime(timeslot.getStartTime())) {
-			throw new TimslotInUsageException("Citizen hasn't created timeslot for this time!");
-		}
-	}
-
+	/**
+	 * If the citizen arrived on time
+	 * @param timeslotStart
+	 * @return
+	 */
 	private boolean applicationIsOnTime(LocalDateTime timeslotStart) {
 		return LocalDateTime.now().isAfter(timeslotStart) 
 				&& LocalDateTime.now().isBefore(timeslotStart.toLocalDate().atTime(23, 55));
 	}
 
+	/**
+	 * Return true if customer is not on black list
+	 * @param jmbg
+	 * @return
+	 */
 	private boolean isOnBlackList(String jmbg) {
 		return appPropertiesLoader.getIds().contains(jmbg);
 	}
 
+	/**
+	 * Return false if citizen is underage
+	 * @param age
+	 * @return
+	 */
 	private boolean isUnderage(int age) {
 		return age < appPropertiesLoader.getAdultAge();
 	}
 	
-	private boolean hasActiveApplication(Application application){
-		//TODO implement logic for check
-		return false;		
+	/**
+	 * If customer has active application for same document
+	 * @param application
+	 * @return
+	 */
+	private boolean hasActiveApplication(Application application) {
+		Citizen citizen = application.getCitizen();
+		List<Application> applications = citizen.getApplications();
+
+		List<Application> tempAppList = applications.stream()
+				.filter(a -> a.getApplicationState() == ApplicationState.RECEIVED)
+				.filter(a -> a.getApplicationState() == ApplicationState.REJECTED)
+				.filter(a -> a.getApplicationKind() == application.getApplicationKind()).collect(Collectors.toList());
+		
+		return !tempAppList.isEmpty();
 	}
 
 }

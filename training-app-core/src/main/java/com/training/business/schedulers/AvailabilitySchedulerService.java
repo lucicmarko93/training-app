@@ -15,6 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Stateless
 public class AvailabilitySchedulerService {
+	
+	private final static String OPEN_HOUR = "8";
+	private final static String CLOSE_HOUR = "20";
+	private final static String ZERO = "0";
 
 	private boolean open = true;
 
@@ -43,7 +47,7 @@ public class AvailabilitySchedulerService {
 	 * 
 	 * @throws InterruptedException
 	 */
-	@Schedule(hour = "8", minute = "0", second = "0", persistent = false)
+	@Schedule(hour = OPEN_HOUR, minute = ZERO, second = ZERO, persistent = false)
 	private void openDay() throws InterruptedException {
 		log.info("*** Service is enabled: {}", LocalDateTime.now());
 		open = true;
@@ -54,7 +58,7 @@ public class AvailabilitySchedulerService {
 	 * 
 	 * @throws InterruptedException
 	 */
-	@Schedule(hour = "20", minute = "0", second = "0", persistent = false)
+	@Schedule(hour = CLOSE_HOUR, minute = ZERO, second = ZERO, persistent = false)
 	private void closeDay() throws InterruptedException {
 		log.info("*** Service is disabled: {}", LocalDateTime.now());
 		open = false;

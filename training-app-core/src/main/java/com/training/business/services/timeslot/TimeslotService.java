@@ -1,4 +1,4 @@
-package com.training.business.timeslot;
+package com.training.business.services.timeslot;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,0 +1,145 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://application.soap.web.training.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="PersoServiceMockService" targetNamespace="http://application.soap.web.training.com/">
+<wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://application.soap.web.training.com/" version="1.0">
+<xs:element name="personalizationR" type="tns:personalizationR"/>
+<xs:element name="personalizationRResponse" type="tns:personalizationRResponse"/>
+<xs:complexType name="personalizationR">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="tns:application"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="application">
+<xs:complexContent>
+<xs:extension base="tns:abstractBaseEntity">
+<xs:sequence>
+<xs:element minOccurs="0" name="applicationKind" type="tns:applicationKind"/>
+<xs:element minOccurs="0" name="applicationNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="applicationState" type="tns:applicationState"/>
+<xs:element minOccurs="0" name="citizen" type="tns:citizen"/>
+<xs:element minOccurs="0" name="comment" type="xs:string"/>
+<xs:element minOccurs="0" name="documentType" type="tns:documentType"/>
+<xs:element minOccurs="0" name="priority" type="tns:priority"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType abstract="true" name="abstractBaseEntity">
+<xs:sequence>
+<xs:element name="id" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="citizen">
+<xs:complexContent>
+<xs:extension base="tns:abstractBaseEntity">
+<xs:sequence>
+<xs:element minOccurs="0" name="address" type="tns:address"/>
+<xs:element name="age" type="xs:int"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="application" nillable="true" type="tns:application"/>
+<xs:element minOccurs="0" name="dateOfBirth" type="tns:localDate"/>
+<xs:element minOccurs="0" name="firstName" type="xs:string"/>
+<xs:element minOccurs="0" name="jmbg" type="xs:string"/>
+<xs:element minOccurs="0" name="lastName" type="xs:string"/>
+<xs:element minOccurs="0" name="nationality" type="xs:string"/>
+<xs:element minOccurs="0" name="parents" type="tns:parents"/>
+<xs:element minOccurs="0" name="profession" type="xs:string"/>
+<xs:element minOccurs="0" name="sex" type="tns:sex"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="address">
+<xs:sequence>
+<xs:element minOccurs="0" name="houseNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="municipality" type="xs:string"/>
+<xs:element minOccurs="0" name="state" type="xs:string"/>
+<xs:element minOccurs="0" name="street" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType final="extension restriction" name="localDate">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="parents">
+<xs:sequence>
+<xs:element minOccurs="0" name="fatherFirstName" type="xs:string"/>
+<xs:element minOccurs="0" name="fatherLastName" type="xs:string"/>
+<xs:element minOccurs="0" name="motherFirstName" type="xs:string"/>
+<xs:element minOccurs="0" name="motherLastName" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="personalizationRResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="tns:personalizationResponse"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="personalizationResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="message" type="xs:string"/>
+<xs:element name="successfully" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="applicationKind">
+<xs:restriction base="xs:string">
+<xs:enumeration value="NEW_ISSUANCE"/>
+<xs:enumeration value="RENEWAL"/>
+<xs:enumeration value="LOST"/>
+<xs:enumeration value="DAMAGED"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="applicationState">
+<xs:restriction base="xs:string">
+<xs:enumeration value="RECEIVED"/>
+<xs:enumeration value="CREATED"/>
+<xs:enumeration value="IN_PERSONALIZATION"/>
+<xs:enumeration value="REJECTED"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="sex">
+<xs:restriction base="xs:string">
+<xs:enumeration value="MALE"/>
+<xs:enumeration value="FEMALE"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="documentType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="ID_CARD"/>
+<xs:enumeration value="PASSPORT"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="priority">
+<xs:restriction base="xs:string">
+<xs:enumeration value="NORMAL"/>
+<xs:enumeration value="EXPRESS"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
+</wsdl:types>
+<wsdl:message name="personalizationR">
+<wsdl:part name="parameters" element="tns:personalizationR"> </wsdl:part>
+</wsdl:message>
+<wsdl:message name="personalizationRResponse">
+<wsdl:part name="parameters" element="tns:personalizationRResponse"> </wsdl:part>
+</wsdl:message>
+<wsdl:portType name="PersoServiceMock">
+<wsdl:operation name="personalizationR">
+<wsdl:input name="personalizationR" message="tns:personalizationR"> </wsdl:input>
+<wsdl:output name="personalizationRResponse" message="tns:personalizationRResponse"> </wsdl:output>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="PersoServiceMockServiceSoapBinding" type="tns:PersoServiceMock">
+<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="personalizationR">
+<soap:operation soapAction="" style="document"/>
+<wsdl:input name="personalizationR">
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="personalizationRResponse">
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="PersoServiceMockService">
+<wsdl:port name="PersoServiceMockPort" binding="tns:PersoServiceMockServiceSoapBinding">
+<soap:address location="http://markol-laptop:8088/mockPersoServiceMockServiceSoapBinding"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>

@@ -21,27 +21,27 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 public class Application extends AbstractBaseEntity {
-	
+
 	private String applicationNumber;
-	
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private DocumentType documentType;
-	
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private ApplicationKind applicationKind;
-	
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Priority priority;
-	
+
 	private String comment;
-	
-	@Enumerated(EnumType.STRING)
-	private ApplicationState applicationState;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "fk_citizen")
-	private Citizen citizen; 
+	private Citizen citizen;
+
+	@Enumerated(EnumType.STRING)
+	private ApplicationState applicationState;
 }

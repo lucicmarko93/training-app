@@ -1,4 +1,4 @@
-package com.training.business.report;
+package com.training.business.schedulers;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

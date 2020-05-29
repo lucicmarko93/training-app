@@ -1,4 +1,4 @@
-package com.training.business.timeslot;
+package com.training.business.services.timeslot;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,9 +11,8 @@ import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import com.training.business.common.exceptions.CitizenHasReservationException;
+import com.training.business.common.exceptions.ConflictException;
 import com.training.business.common.exceptions.ServiceIsNotAvailableException;
-import com.training.business.common.exceptions.TimslotInUsageException;
 import com.training.business.schedulers.AvailabilitySchedulerService;
 import com.training.infrastructure.database.timeslot.Timeslot;
 import com.training.infrastructure.database.timeslot.TimeslotRepository;
@@ -28,12 +27,25 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Stateless
 public class TimeslotServiceImpl implements TimeslotService {
+	
+// Test spring data repository
+//	@PersistenceContext(unitName = "first")
+//	private EntityManager em;
+//	private SpringTimeslotRepository springRepository;
 
 	@Inject
 	private TimeslotRepository timeslotRepository;
 
 	@Inject
 	private AvailabilitySchedulerService aSchedulerService;
+	
+//	  @PostConstruct
+//	  private void init() {
+//	    // Instantiate Spring Data factory
+//	    RepositoryFactorySupport factory = new JpaRepositoryFactory(em);
+//	    // Get an implemetation of PersonRepository from factory
+//	    this.springRepository = factory.getRepository(SpringTimeslotRepository.class);
+//	  }
 
 	/**
 	 * Create timeslot
@@ -76,7 +88,7 @@ public class TimeslotServiceImpl implements TimeslotService {
 	 */
 	private Timeslot createTimeslot(Timeslot timeslot) {
 		validateTimeslot(timeslot);
-
+		
 		timeslot.setEndTime(timeslot.getStartTime().plusMinutes(15));
 
 		timeslotRepository.save(timeslot);
@@ -90,13 +102,18 @@ public class TimeslotServiceImpl implements TimeslotService {
 	 */
 	private void validateTimeslot(Timeslot timeslot) {
 
+		if(timeslotIsInPast(timeslot)) {
+			throw new ConflictException("Timeslots in past are not available!");
+		}
+		
 		if (timeslotInUsage(timeslot)) {
-			throw new TimslotInUsageException("Timeslot in usage!");
+			throw new ConflictException("Timeslot is in usage!");
 		}
 
 		if (citizenHasReservationForDate(timeslot)) {
-			throw new CitizenHasReservationException("Citizen has reservation for this date!");
+			throw new ConflictException("Citizen has reservation for this date!");
 		}
+
 	}
 
 	/**
@@ -105,6 +122,11 @@ public class TimeslotServiceImpl implements TimeslotService {
 	 * @return
 	 */
 	private List<Timeslot> getAvailableTimeslots(LocalDate date) {
+		
+		if (LocalDate.now().isAfter(date)) {
+			throw new ConflictException("Timeslots in past are not available!");
+		}
+		
 		List<LocalDateTime> usedTimeslots = timeslotRepository.getByDate(date.atTime(8, 0)).stream()
 				.map(Timeslot::getStartTime).collect(Collectors.toList());
 
@@ -112,7 +134,9 @@ public class TimeslotServiceImpl implements TimeslotService {
 
 		potentialTimeslots.removeAll(usedTimeslots);
 
-		return potentialTimeslots.stream().map(t -> Timeslot.builder().startTime(t).endTime(t.plusMinutes(15)).build())
+		return potentialTimeslots.stream()
+				.filter(tt -> tt.isAfter(LocalDateTime.now()))
+				.map(t -> Timeslot.builder().startTime(t).endTime(t.plusMinutes(15)).build())
 				.collect(Collectors.toList());
 	}
 
@@ -132,6 +156,11 @@ public class TimeslotServiceImpl implements TimeslotService {
 	 */
 	private boolean citizenHasReservationForDate(Timeslot timeslot) {
 		return Objects.nonNull(timeslotRepository.getByJmbgAndDate(timeslot.getJmbg(), timeslot.getStartTime()));
+	}
+	
+	private boolean timeslotIsInPast(Timeslot timeslot) {
+		// TODO Auto-generated method stub
+		return timeslot.getStartTime().isBefore(LocalDateTime.now());
 	}
 
 	/**

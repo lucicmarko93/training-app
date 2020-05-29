@@ -1,4 +1,4 @@
-package com.training.business.application;
+package com.training.business.services.application;
 
 import com.training.infrastructure.database.application.Application;
 

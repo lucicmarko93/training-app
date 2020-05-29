@@ -29,5 +29,4 @@ public class PersoServiceClientSoapImpl implements PersoServiceClient {
 		
 		log.info("Message from Soap service: *Successfully - {} | message {}*",response.isSuccessfully(),response.getMessage());
 	}
-
 }

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Timeslot</title>
+</h:head>
+<h:body>
+	<h2>Timeslot reservation</h2>
+	<p:tooltip />
+
+	<h:form id="myForm1">
+		<p:messages id="messages" showDetail="true" closable="true">
+			<p:autoUpdate />
+		</p:messages>
+		<div class="ui-g ui-fluid">
+
+			<div class="ui-g-12 ui-md-2">
+				<div class="ui-inputgroup">
+					<span class="ui-float-label"> <p:calendar id="datetime"
+							value="#{timeslot.date}" pattern="yyyy-MM-dd" required="true" /> <p:outputLabel
+							for="@previous" value="Chose date" />
+					</span>
+					<p:message for="datetime" display="icon" />
+
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-2">
+				<p:commandButton value="Check availability" id="ajax"
+					update="myForm1 :myForm2:time_table" action="#{timeslot.getAll}"
+					style="margin-right:20px;" styleClass="ui-priority-primary" />
+
+			</div>
+		</div>
+
+	</h:form>
+
+	<p:separator />
+
+	<h:form id="myForm2">
+
+		<div class="ui-g ui-fluid">
+			<div class="ui-g-12 ui-md-4">
+				<p:dataTable var="time" value="#{timeslot.times}" id="time_table">
+
+					<p:column headerText="Times">
+						<h:outputText value="#{time}" />
+					</p:column>
+					<p:column headerText="Select">
+
+
+						<p:commandButton update=":myForm2:timeDetail"
+							oncomplete="PF('timeDialog').show()" value="Select" title="View">
+							<f:setPropertyActionListener value="#{time}"
+								target="#{timeslot.time}" />
+
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+			</div>
+		</div>
+
+		<p:dialog header="Time Info" widgetVar="timeDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="timeDetail" style="text-align:center;">
+				<p:panelGrid columns="2" rendered="#{not empty timeslot.time}"
+					columnClasses="label,value">
+					<f:facet name="header">
+						<h:outputText value="#{timeslot.time}" />
+
+					</f:facet>
+
+					<h:outputText value="#{timeslot.time}" />
+
+					<p:commandButton value="Confirm" id="confirm"
+						style="margin-right:20px;" />
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:dialog>
+	</h:form>
+
+
+</h:body>
+</html>

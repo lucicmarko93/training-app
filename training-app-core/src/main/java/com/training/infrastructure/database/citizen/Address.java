@@ -18,6 +18,7 @@ public class Address implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	@NotNull
 	@NotBlank
 	private String street;

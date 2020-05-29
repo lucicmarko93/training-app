@@ -13,7 +13,6 @@ public class CitizenRepository {
 	@PersistenceContext(unitName = "second")
 	private EntityManager em;
 	
-	
 	public void save(Citizen citizen) {
 		em.persist(citizen);
 	}

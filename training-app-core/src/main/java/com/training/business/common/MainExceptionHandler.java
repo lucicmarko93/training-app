@@ -8,10 +8,9 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import com.training.business.common.exceptions.CitizenHasReservationException;
+import com.training.business.common.exceptions.ConflictException;
 import com.training.business.common.exceptions.ResourceNotFoundException;
 import com.training.business.common.exceptions.ServiceIsNotAvailableException;
-import com.training.business.common.exceptions.TimslotInUsageException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,9 +25,9 @@ public class MainExceptionHandler implements ExceptionMapper<EJBTransactionRolle
 
 	@Override
 	public Response toResponse(EJBTransactionRolledbackException exception) {
+		log.error("{}", exception.getMessage());
 
 		if (isCause(ResourceNotFoundException.class, exception)) {
-			log.error("{}", exception.getMessage());
 			return Response.status(Status.NOT_FOUND)
 					.entity(ErrorMessage.builder()
 							.status(404)
@@ -40,7 +39,6 @@ public class MainExceptionHandler implements ExceptionMapper<EJBTransactionRolle
 		}
 		
 		if (isCause(ServiceIsNotAvailableException.class, exception)) {
-			log.error("{}", exception.getMessage());
 			return Response.status(Status.SERVICE_UNAVAILABLE)
 					.entity(ErrorMessage.builder()
 							.status(503)
@@ -51,20 +49,7 @@ public class MainExceptionHandler implements ExceptionMapper<EJBTransactionRolle
 					.build();
 		}
 		
-		if (isCause(TimslotInUsageException.class, exception)) {
-			log.error("{}", exception.getMessage());
-			return Response.status(Status.CONFLICT)
-					.entity(ErrorMessage.builder()
-							.status(409)
-							.reason(Status.CONFLICT.getReasonPhrase())
-							.message(exception.getMessage())
-							.timestamp(LocalDateTime.now())
-							.build())
-					.build();
-		}
-		
-		if (isCause(CitizenHasReservationException.class, exception)) {
-			log.error("{}", exception.getMessage());
+		if (isCause(ConflictException.class, exception)) {
 			return Response.status(Status.CONFLICT)
 					.entity(ErrorMessage.builder()
 							.status(409)
@@ -86,7 +71,7 @@ public class MainExceptionHandler implements ExceptionMapper<EJBTransactionRolle
 
 	}
 
-	private boolean isCause(Class<? extends Throwable> expected, Throwable exc) {
+	public static boolean isCause(Class<? extends Throwable> expected, Throwable exc) {
 		return expected.isInstance(exc) || (exc != null && isCause(expected, exc.getCause()));
 	}
 

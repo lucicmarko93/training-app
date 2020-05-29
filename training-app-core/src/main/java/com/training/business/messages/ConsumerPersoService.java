@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 		@ActivationConfigProperty(propertyName = "destination", propertyValue = "java:/jms/queue/PersoSQueue"),
 		@ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge") })
 public class ConsumerPersoService implements MessageListener {
-
+	
 	@Inject
 	private PersoServiceClient persoServiceClient;
 
@@ -37,10 +37,12 @@ public class ConsumerPersoService implements MessageListener {
 			
 			if (Objects.isNull(application)) {
 				throw new ResourceNotFoundException("Application is not found!");
-			}
+			}	
+				
 			persoServiceClient.process(application);
+			
 		} catch (JMSException e) {
-			log.error("JMS exception!", e);
+			log.error("JMS exception!", e);						
 		}
 	}
 }
