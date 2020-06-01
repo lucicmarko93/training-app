@@ -6,20 +6,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @MappedSuperclass
-@Getter
-@Setter
 public abstract class AbstractBaseEntity implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
-	@Id
+    @Id
     @GeneratedValue
-    protected long id;	
+    protected long id;
+	
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
+    }
 }

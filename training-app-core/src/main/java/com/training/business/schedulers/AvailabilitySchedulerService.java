@@ -30,17 +30,17 @@ public class AvailabilitySchedulerService {
 	 * 
 	 * @throws InterruptedException
 	 */
-	@Schedule(hour = "*", minute = "*", second = "*/10", persistent = false)
-	private void o() throws InterruptedException {
-		StringBuilder enabled = new StringBuilder();
-		if (!open) {
-			enabled.append("enabled");
-		} else {
-			enabled.append("disabled");
-		}
-		log.info("*** Service is {}: {}", enabled, LocalDateTime.now());
-		open = !open;
-	}
+//	@Schedule(hour = "*", minute = "*", second = "*/10", persistent = false)
+//	private void o() throws InterruptedException {
+//		StringBuilder enabled = new StringBuilder();
+//		if (!open) {
+//			enabled.append("enabled");
+//		} else {
+//			enabled.append("disabled");
+//		}
+//		log.info("*** Service is {}: {}", enabled, LocalDateTime.now());
+//		open = !open;
+//	}
 
 	/**
 	 * Scheduler which enable service at 8 AM.
