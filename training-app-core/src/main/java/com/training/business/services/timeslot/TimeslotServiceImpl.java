@@ -27,25 +27,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Stateless
 public class TimeslotServiceImpl implements TimeslotService {
-	
-// Test spring data repository
-//	@PersistenceContext(unitName = "first")
-//	private EntityManager em;
-//	private SpringTimeslotRepository springRepository;
 
 	@Inject
 	private TimeslotRepository timeslotRepository;
 
 	@Inject
 	private AvailabilitySchedulerService aSchedulerService;
-	
-//	  @PostConstruct
-//	  private void init() {
-//	    // Instantiate Spring Data factory
-//	    RepositoryFactorySupport factory = new JpaRepositoryFactory(em);
-//	    // Get an implemetation of PersonRepository from factory
-//	    this.springRepository = factory.getRepository(SpringTimeslotRepository.class);
-//	  }
 
 	/**
 	 * Create timeslot

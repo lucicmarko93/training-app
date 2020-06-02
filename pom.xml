@@ -11,6 +11,8 @@
 		<module>training-app-core</module>
 		<module>training-app-web</module>
 		<module>training-app-ear</module>
+		<module>training-model-application</module>
+		<module>training-model-timeslot</module>
 	</modules>
 
 	<properties>
@@ -18,6 +20,12 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>8.0</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
