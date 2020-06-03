@@ -12,16 +12,15 @@
 	<p:tooltip />
 
 	<h:form id="myForm1">
-		<p:messages id="messages" showDetail="true" closable="true">
+		<p:growl id="messages" showDetail="true" closable="true">
 			<p:autoUpdate />
-		</p:messages>
+		</p:growl>
 		<div class="ui-g ui-fluid">
-
 			<div class="ui-g-12 ui-md-2">
 				<div class="ui-inputgroup">
 					<span class="ui-float-label"> <p:calendar id="datetime"
-							value="#{timeslot.date}" pattern="yyyy-MM-dd" required="true" /> <p:outputLabel
-							for="@previous" value="Chose date" />
+							value="#{timeslot.date}" pattern="yyyy-MM-dd" required="true" />
+						<p:outputLabel for="@previous" value="Chose date" />
 					</span>
 					<p:message for="datetime" display="icon" />
 
@@ -31,35 +30,27 @@
 				<p:commandButton value="Check availability" id="ajax"
 					update="myForm1 :myForm2:time_table" action="#{timeslot.getAll}"
 					style="margin-right:20px;" styleClass="ui-priority-primary" />
-
 			</div>
 		</div>
-
 	</h:form>
 
 	<p:separator />
 
 	<h:form id="myForm2">
-
 		<div class="ui-g ui-fluid">
 			<div class="ui-g-12 ui-md-4">
 				<p:dataTable var="time" value="#{timeslot.times}" id="time_table">
-
 					<p:column headerText="Times">
 						<h:outputText value="#{time}" />
 					</p:column>
 					<p:column headerText="Select">
-
-
 						<p:commandButton update=":myForm2:timeDetail"
 							oncomplete="PF('timeDialog').show()" value="Select" title="View">
 							<f:setPropertyActionListener value="#{time}"
 								target="#{timeslot.time}" />
-
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
-
 			</div>
 		</div>
 
@@ -70,18 +61,22 @@
 					columnClasses="label,value">
 					<f:facet name="header">
 						<h:outputText value="#{timeslot.time}" />
-
 					</f:facet>
 
-					<h:outputText value="#{timeslot.time}" />
-
-					<p:commandButton value="Confirm" id="confirm"
-						style="margin-right:20px;" />
+					<h:outputText value="Firstname" />
+					<p:inputText id="firstName" />
+					<h:outputText value="Lastname" />
+					<p:inputText id="lastName" />
+					<h:outputText value="JMBG" />
+					<p:inputText id="jmbg" />
+					<h:outputText value="" />
+					<p:commandButton oncomplete="PF('timeDialog').close()" value="Confirm" id="withIcon"
+						action="#{timeslot.create()}" update=":myForm1:messages"
+						styleClass="ui-priority-primary" />
 				</p:panelGrid>
 			</p:outputPanel>
 		</p:dialog>
 	</h:form>
-
 
 </h:body>
 </html>

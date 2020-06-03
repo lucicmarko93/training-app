@@ -2,6 +2,7 @@ package com.training.web.app;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,8 @@ import com.training.business.common.exceptions.ConflictException;
 import com.training.business.common.exceptions.ServiceIsNotAvailableException;
 import com.training.business.services.timeslot.TimeslotService;
 import com.training.infrastructure.database.timeslot.Timeslot;
+import com.training.web.rest.timeslot.TimeslotMapper;
+import com.training.web.rest.timeslot.data.TimeslotDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,9 +39,15 @@ public class TimeslotView implements Serializable {
 	private List<String> times = new ArrayList<String>();
 	private LocalDate date;
 	private String time;
+	private String firstName;
+	private String lastName;
+	private String jmbg;
 
 	@Inject
 	private TimeslotService timeslotService;
+	
+	@Inject
+	private TimeslotMapper timeslotMapper;
 
 	public void getAll() {
 		try {
@@ -50,13 +59,30 @@ public class TimeslotView implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Service is not available."));
 			}
-			
+
 			if (MainExceptionHandler.isCause(ConflictException.class, e)) {
-				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Timeslots in past are not available!"));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"Error!", "Timeslots in past are not available!"));
 			}
-			
+
 			times.clear();
+		}
+
+	}
+
+	public void create() {
+		try {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-ddTHH:mm"); 
+			LocalDateTime dateTime = LocalDateTime.parse(time, formatter);
+
+			TimeslotDto timeslotDto = TimeslotDto.builder()
+					.firstName(firstName)
+					.lastName(lastName)
+					.jmbg(jmbg)
+					.startTime(dateTime)
+					.build();
+			timeslotService.create(timeslotMapper.map(timeslotDto));
+		} catch (Exception e) {
 
 		}
 
